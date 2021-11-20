@@ -1,3 +1,5 @@
+[![CI](https://github.com/HtwProgramming/webtech-person-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/HtwProgramming/webtech-person-frontend/actions/workflows/ci.yml)
+
 # person-frontend
 
 ## Project setup
