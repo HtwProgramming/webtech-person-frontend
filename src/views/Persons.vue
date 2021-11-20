@@ -23,27 +23,7 @@ export default {
   name: 'Persons',
   data () {
     return {
-      persons: [
-        {
-          id: 1,
-          firstName: 'Max',
-          lastName: 'Mustermann',
-          vaccinated: true,
-          gender: 'MALE',
-          pets: []
-        },
-        {
-          id: 2,
-          firstName: 'Maxima',
-          lastName: 'Meier',
-          vaccinated: false,
-          gender: 'FEMALE',
-          pets: [
-            1,
-            2
-          ]
-        }
-      ]
+      persons: []
     }
   },
   methods: {
@@ -54,6 +34,19 @@ export default {
         return require('../assets/female.png')
       }
     }
+  },
+  mounted () {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    }
+
+    fetch('http://localhost:8080/api/v1/persons', requestOptions)
+      .then(response => response.json())
+      .then(result => result.forEach(person => {
+        this.persons.push(person)
+      }))
+      .catch(error => console.log('error', error))
   }
 }
 </script>
