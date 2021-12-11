@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="mt-5">
-          <button class="btn btn-primary me-3" type="submit" @click.prevent="createPerson">Create</button>
+          <button class="btn btn-primary me-3" type="submit" @click="createPerson">Create</button>
           <button class="btn btn-danger" type="reset">Reset</button>
         </div>
       </form>
@@ -56,10 +56,28 @@ export default {
   },
   methods: {
     createPerson () {
-      console.log(this.firstName)
-      console.log(this.lastName)
-      console.log(this.gender)
-      console.log(this.vaccinated)
+      const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + '/api/v1/persons'
+
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+
+      const payload = JSON.stringify({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        vaccinated: this.vaccinated,
+        gender: this.gender
+      })
+
+      const requestOptions = {
+        method: 'POST',
+        headers: headers,
+        body: payload,
+        redirect: 'follow'
+      }
+
+      fetch(endpoint, requestOptions)
+        .then(response => response.text())
+        .catch(error => console.log('error', error))
     }
   }
 }
