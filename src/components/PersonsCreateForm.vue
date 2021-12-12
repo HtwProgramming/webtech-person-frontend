@@ -8,14 +8,14 @@
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <form class="needs-validation text-start" novalidate>
+      <form class="text-start">
         <div class="mb-3">
           <label for="first-name" class="form-label">First name</label>
-          <input type="text" class="form-control" id="first-name" v-model="firstName" required>
+          <input type="text" class="form-control" id="first-name" v-model="firstName">
         </div>
         <div class="mb-3">
           <label for="last-name" class="form-label">Last name</label>
-          <input type="text" class="form-control" id="last-name" v-model="lastName" required>
+          <input type="text" class="form-control" id="last-name" v-model="lastName">
         </div>
         <div class="mb-3">
           <label for="gender" class="form-label">Gender</label>
