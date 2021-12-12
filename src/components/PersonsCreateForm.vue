@@ -8,23 +8,32 @@
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <form class="text-start">
+      <form class="text-start needs-validation" novalidate>
         <div class="mb-3">
           <label for="first-name" class="form-label">First name</label>
           <input type="text" class="form-control" id="first-name" v-model="firstName" required>
+          <div class="invalid-feedback">
+            Please provide the first name.
+          </div>
         </div>
         <div class="mb-3">
           <label for="last-name" class="form-label">Last name</label>
           <input type="text" class="form-control" id="last-name" v-model="lastName" required>
+          <div class="invalid-feedback">
+            Please provide the last name.
+          </div>
         </div>
         <div class="mb-3">
           <label for="gender" class="form-label">Gender</label>
-          <select id="gender" class="form-select" v-model="gender">
-            <option value="" selected>Choose...</option>
+          <select id="gender" class="form-select" v-model="gender" required>
+            <option value="" selected disabled>Choose...</option>
             <option value="MALE">Male</option>
             <option value="FEMALE">Female</option>
             <option value="DIVERSE">Diverse</option>
           </select>
+          <div class="invalid-feedback">
+            Please select a valid gender.
+          </div>
         </div>
         <div class="mb-3">
           <div class="form-check">
@@ -56,28 +65,48 @@ export default {
   },
   methods: {
     createPerson () {
-      const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + '/api/v1/persons'
+      if (this.validate()) {
+        const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + '/api/v1/persons'
 
-      const headers = new Headers()
-      headers.append('Content-Type', 'application/json')
+        const headers = new Headers()
+        headers.append('Content-Type', 'application/json')
 
-      const payload = JSON.stringify({
-        firstName: this.firstName,
-        lastName: this.lastName,
-        vaccinated: this.vaccinated,
-        gender: this.gender
-      })
+        const payload = JSON.stringify({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          vaccinated: this.vaccinated,
+          gender: this.gender
+        })
 
-      const requestOptions = {
-        method: 'POST',
-        headers: headers,
-        body: payload,
-        redirect: 'follow'
+        const requestOptions = {
+          method: 'POST',
+          headers: headers,
+          body: payload,
+          redirect: 'follow'
+        }
+
+        fetch(endpoint, requestOptions)
+          .then(response => response.text())
+          .catch(error => console.log('error', error))
       }
+    },
+    validate () {
+      let valid = true
+      const forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+              valid = false
+            }
 
-      fetch(endpoint, requestOptions)
-        .then(response => response.text())
-        .catch(error => console.log('error', error))
+            form.classList.add('was-validated')
+          }, false)
+        })
+
+      return valid
     }
   }
 }
