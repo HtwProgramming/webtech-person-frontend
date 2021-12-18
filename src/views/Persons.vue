@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <persons-card-list :persons="this.persons"></persons-card-list>
   </div>
-  <persons-create-form></persons-create-form>
+  <persons-create-form @created="addPerson"></persons-create-form>
 </template>
 
 <script>
@@ -19,6 +19,20 @@ export default {
   data () {
     return {
       persons: []
+    }
+  },
+  methods: {
+    addPerson (personLocation) {
+      const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + personLocation
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      }
+
+      fetch(endpoint, requestOptions)
+        .then(response => response.json())
+        .then(person => this.persons.push(person))
+        .catch(error => console.log('error', error))
     }
   },
   mounted () {
