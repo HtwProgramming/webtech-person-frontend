@@ -1,5 +1,5 @@
 <template>
-  <h1>Welcome to Persons</h1>
+  <h1>Persons</h1>
   <div class="container-fluid">
     <persons-card-list :persons="this.persons"></persons-card-list>
   </div>
